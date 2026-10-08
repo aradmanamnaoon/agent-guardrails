@@ -1,0 +1,36 @@
+{
+    "permissions": {
+        "allow": [
+            "Read(*)",
+            "Glob(*)",
+            "Grep(*)",
+            "Bash(python scripts/validate.py)",
+            "Bash(pytest:*)",
+            "Bash(git status)",
+            "Bash(git diff:*)",
+            "Bash(git log:*)",
+            "Bash(npx skills add:*)",
+            "Bash(npx skills list:*)"
+        ],
+        "deny": [
+            "Bash(rm -rf:*)",
+            "Bash(git push --force:*)",
+            "Bash(npm install -g:*)",
+            "Read(./.env)",
+            "Read(./.env.local)"
+        ]
+    },
+    "hooks": {
+        "PostToolUse": [
+            {
+                "matcher": "Write",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "py scripts/validate.py"
+                    }
+                ]
+            }
+        ]
+    }
+}
