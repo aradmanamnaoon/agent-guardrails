@@ -78,6 +78,8 @@ Run `npx skills list` to see which path your agent uses.
 
 The skill definitions are Markdown instructions plus a local format validator (`scripts/validate.py`, requiring PyYAML). The repository's Markdown does not itself implement sandboxing, network isolation, credential control, authenticated approval, or runtime cost limits. Installing through `npx`, using an AI model, or connecting tools may involve network requests and data sharing under their own settings. Review the [trust boundaries and evaluation protocol](docs/BOUNDARIES_AND_EVALUATION.md) before relying on these instructions.
 
+**Tested a skill with synthetic inputs?** [Report a specific first-run or boundary failure](https://github.com/aradmanamnaoon/agent-guardrails/issues/new?template=first-run-feedback.yml). Include your host/model and expected versus observed behavior; never share private prompts or secrets. Independent adversarial testing remains unverified.
+
 ## Status
 
 Early release. Built to be composed. Each skill works independently; together they form a coherent lifecycle. Feedback welcome via GitHub issues. If you find edge cases or have suggestions for additional safeguards, please open an issue or submit a PR.
