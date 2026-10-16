@@ -1,12 +1,12 @@
 ---
 name: budget
-description: Context and cost tracking guard that registers a baseline estimate at preflight time and checks actual consumption against it at defined checkpoints during execution. Warns at 75 percent of estimate, stops at 100 percent. Prevents silent context window blowout and runaway token spend where the real cost of a long-running agent session is only discovered after the fact. Complements preflight's one-time estimate by making it enforceable.
+description: Advisory budget checkpoint skill for agents. Records a baseline estimate, compares observed usage when metrics exist, requests a warning at 75 percent, and instructs the agent to pause at 100 percent. Does not implement runtime metering or enforce token, time, or spending limits.
 license: MIT
 ---
 
 # Budget
 
-Preflight estimates the cost. Budget enforces it. An estimate without enforcement is a guess.
+Preflight estimates the cost. Budget asks the host agent to compare observed usage and pause at thresholds. This Markdown skill is not a runtime meter or hard spending limit; use external platform limits for enforcement.
 
 ## When this runs
 
@@ -52,10 +52,10 @@ Output exactly this template wrapped in a markdown code block. Make absolutely s
 - Cost: $[min]-$[max]
 
 ### Current consumption
-- Tokens used: [actual]
-- Time elapsed: [actual]
-- Cost accrued: [actual]
-- Percentage of upper bound: [X]%
+- Tokens used: [measured value, or UNKNOWN if unavailable]
+- Time elapsed: [measured value, or UNKNOWN if unavailable]
+- Cost accrued: [measured value, or UNKNOWN if unavailable]
+- Percentage of upper bound: [X]% (or UNKNOWN when usage is unavailable)
 
 ### Trajectory
 - Pace: [on track / faster / slower] than expected
@@ -77,6 +77,9 @@ When consumption reaches 100 percent of the upper bound, stop and escalate using
 If the user approves additional budget, update the baseline to reflect the new range and continue.
 
 ## Rules for this skill
+
+- If actual token/time/money usage is unavailable, write UNKNOWN. Never guess a measured consumption percentage or claim a threshold was enforced.
+- This is an instruction for a cooperating agent, not a guarantee that tools or billing will stop. For hard caps, use host/platform limits.
 
 - Only check at defined checkpoints. Do not check after every action - that creates noise.
 - Always report against the upper bound, not the lower. Budget safety uses worst-case.
