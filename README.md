@@ -1,6 +1,6 @@
 # Agent Guardrails
 
-Five portable Agent Skills that compose into a lifecycle for AI coding agents. Stops expensive mistakes before they happen by layering research gates, cheap verification, scope enforcement, cost tracking, and failure recovery.
+Five portable **Markdown-based agent workflow skills** for research, preflight checks, scope review, budget reporting, and failure recovery. They *request* human review and pauses; they do not technically enforce tool permissions, budgets, or security boundaries.
 
 ## The problem
 
@@ -8,7 +8,7 @@ AI coding agents fail expensively not because the model is weak but because the 
 
 ## The fix
 
-Five portable Agent Skills that compose into a lifecycle: **recon** (research and propose self-rules), **preflight** (cheap verification and cost estimation), **hold** (stop-and-recover on unhandled failures), **scope** (drift guard against silent boundary crossing), and **budget** (context and cost tracking enforcement). Each installs independently via `npx skills add`. Together they provide layered escalation where every step waits for explicit user confirmation before proceeding.
+Five skills compose into a suggested lifecycle: **recon** (research and propose self-rules), **preflight** (cheap verification and cost estimates), **hold** (request recovery decisions), **scope** (flag possible drift), and **budget** (report estimated/observed consumption when measurable). Each installs independently via `npx skills add`. Compliance depends on the host agent; no tool call is blocked by this repository alone.
 
 ## The lifecycle
 
@@ -70,13 +70,13 @@ Run `npx skills list` to see which path your agent uses.
 
 - **Layered escalation** — not every error triggers hold. Only unhandled failures stop execution; anticipated risks were already priced in during preflight.
 - **Estimation as a range** — never a single number. Every cost is expressed as min-max with confidence level and basis.
-- **Enforcement of the estimate** — preflight's range becomes an enforceable baseline tracked by budget. The estimate is a contract, not a guess.
+- **Budget checkpoints are advisory** — preflight's range becomes a baseline for the agent to compare with observed usage **if usage data is available**. The skill cannot meter costs or force a runtime halt.
 - **Scope as a contract** — the original task defines boundaries. Actions outside those boundaries trigger drift detection, not silent expansion.
 - **Confirmation gates at each phase** — recon requires explicit confirmation before planning starts; preflight requires it before real runs begin; hold requires choice between recovery options.
 
 ## Security
 
-These skills contain **no shell execution**, **no network calls**, and **no credential access**. They are pure Markdown plus one local Python validator (`scripts/validate.py`). The validator itself is auditable in under five minutes: check the frontmatter schema, verify allowed keys (name, description, license), confirm line count limits, and ensure code fences are balanced. No external dependencies beyond PyYAML. No API keys required. No data leaves your machine.
+The skill definitions are Markdown instructions plus a local format validator (`scripts/validate.py`, requiring PyYAML). The repository's Markdown does not itself implement sandboxing, network isolation, credential control, authenticated approval, or runtime cost limits. Installing through `npx`, using an AI model, or connecting tools may involve network requests and data sharing under their own settings. Review the [trust boundaries and evaluation protocol](docs/BOUNDARIES_AND_EVALUATION.md) before relying on these instructions.
 
 ## Status
 
