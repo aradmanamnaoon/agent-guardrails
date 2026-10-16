@@ -1,6 +1,6 @@
 # Protocol
 
-How the five skills compose into a coherent agent workflow lifecycle: research → cheap test → cost → execute → recover. Each skill is independently installable, but together they provide layered escalation that stops expensive mistakes before they happen.
+How the five skills suggest an agent workflow lifecycle: research → cheap test → cost → execute → recover. Each skill is independently installable. The skills are advisory Markdown instructions, not an orchestrator or hard enforcement layer; a host agent can omit or ignore a step. See [trust boundaries and evaluation](BOUNDARIES_AND_EVALUATION.md).
 
 ```text
                        SETUP                          EXECUTE
@@ -27,7 +27,7 @@ How the five skills compose into a coherent agent workflow lifecycle: research �
 
 ## Composition contract
 
-Each skill installs independently via `npx skills add`. When all five are present, they run in the order shown above. When only some are present, each still functions correctly — for example, having only `recon` produces a plan and stops for confirmation without needing any other skill. The composition is what makes the workflow coherent; individual skills are composable building blocks.
+Each skill installs independently via `npx skills add`. When all five are provided to a compatible host, the host is asked to follow the order shown above; automatic invocation and ordering are not independently verified. When only some are present, each still functions correctly — for example, having only `recon` produces a plan and stops for confirmation without needing any other skill. The composition is what makes the workflow coherent; individual skills are composable building blocks.
 
 This architecture avoids coupling: no skill imports or calls another. Instead, they share a common protocol: produce a report, stop, wait for explicit user direction. That shared pattern is what enables reliable orchestration at the CLI level.
 
